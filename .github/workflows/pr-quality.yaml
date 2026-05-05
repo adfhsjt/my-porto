@@ -1,12 +1,12 @@
 name: PR Quality Check
 
 on:
-  pull_request:
+  push:
     branches:
       - master
 
 concurrency:
-  group: pr-quality-${{ github.event.pull_request.number }}
+  group: pr-quality-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
