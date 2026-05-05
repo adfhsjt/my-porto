@@ -1,0 +1,36 @@
+name: Build and Push to Docker Hub
+
+on:
+  push:
+    branches:
+      - main # Trigger only on pushes to the main branch
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        # Buildx allows for more efficient builds and multi-platform support
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          # Replace 'your-username' and 'your-repo-name' with your actual details
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/my-porto:latest
+            ${{ secrets.DOCKER_USERNAME }}/my-porto:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
