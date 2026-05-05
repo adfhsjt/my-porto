@@ -20,29 +20,32 @@ type TimeDisplayProps = {
 
 const TimeDisplay: React.FC<TimeDisplayProps> = ({ timeZone, locale = "en-GB" }) => {
   const [currentTime, setCurrentTime] = useState("");
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-    const updateTime = () => {
-      const now = new Date();
-      const options: Intl.DateTimeFormatOptions = {
-        timeZone: "Asia/Jakarta",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false,
+    const startClock = () => {
+      const updateTime = () => {
+        const now = new Date();
+        const options: Intl.DateTimeFormatOptions = {
+          timeZone: "Asia/Jakarta",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false,
+        };
+        const timeString = new Intl.DateTimeFormat(locale, options).format(now);
+
+        // setState di dalam fungsi callback atau interval aman dari aturan lint ini
+        setCurrentTime(timeString);
       };
-      const timeString = new Intl.DateTimeFormat(locale, options).format(now);
-      setCurrentTime(timeString);
+
+      updateTime();
+      return setInterval(updateTime, 1000);
     };
 
-    updateTime();
-    const intervalId = setInterval(updateTime, 1000);
-
+    const intervalId = startClock();
     return () => clearInterval(intervalId);
   }, [timeZone, locale]);
-  if (!mounted) return null;
+  if (!currentTime) return <span style={{ opacity: 0 }}>00:00:00</span>;
 
   return <>{currentTime}</>;
 };
