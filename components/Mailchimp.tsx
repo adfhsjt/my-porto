@@ -5,12 +5,12 @@ import { Button, Heading, Input, Text, Background, Column, Row } from "@once-ui-
 import { opacity, SpacingToken } from "@once-ui-system/core";
 import { useState } from "react";
 
-function debounce<T extends (...args: unknown[]) => void>(func: T, delay: number): T {
+function debounce<TArgs extends unknown[]>(func: (...args: TArgs) => void, delay: number) {
   let timeout: ReturnType<typeof setTimeout>;
-  return ((...args: Parameters<T>) => {
+  return (...args: TArgs) => {
     clearTimeout(timeout);
     timeout = setTimeout(() => func(...args), delay);
-  }) as T;
+  };
 }
 
 export const Mailchimp: React.FC<React.ComponentProps<typeof Column>> = ({ ...flex }) => {

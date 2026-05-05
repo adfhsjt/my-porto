@@ -65,6 +65,11 @@ export default async function Project({
     notFound();
   }
 
+  const avatars =
+    post.metadata.team?.map((member) => ({
+      src: member.avatar || person.avatar,
+    })) ?? [];
+
   return (
     <Column as="section" maxWidth="m" horizontal="center" gap="l">
       <Schema
@@ -95,7 +100,7 @@ export default async function Project({
       </Column>
       <Row marginBottom="32" horizontal="center">
         <Row gap="16" vertical="center">
-          {post.metadata.team && <AvatarGroup reverse avatars={avatars} size="s" />}
+          {avatars.length > 0 && <AvatarGroup reverse avatars={avatars} size="s" />}
           <Text variant="label-default-m" onBackground="brand-weak">
             {post.metadata.team?.map((member, idx) => (
               <span key={idx}>

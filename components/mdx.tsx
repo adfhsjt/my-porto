@@ -131,6 +131,11 @@ function createCodeBlock(props: React.ComponentPropsWithoutRef<"pre"> & { childr
     // Extract language from className (format: language-xxx)
     const language = className.replace("language-", "");
     const label = language.charAt(0).toUpperCase() + language.slice(1);
+    const code = Array.isArray(children)
+      ? children.join("")
+      : typeof children === "string"
+        ? children
+        : "";
 
     return (
       <CodeBlock
@@ -138,7 +143,7 @@ function createCodeBlock(props: React.ComponentPropsWithoutRef<"pre"> & { childr
         marginBottom="16"
         codes={[
           {
-            code: children,
+            code,
             language,
             label,
           },
