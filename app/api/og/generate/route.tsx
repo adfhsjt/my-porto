@@ -4,8 +4,8 @@ import { baseURL, person } from "@/resources";
 export const runtime = "nodejs";
 
 export async function GET(request: Request) {
-  let url = new URL(request.url);
-  let title = url.searchParams.get("title") || "Portfolio";
+  const url = new URL(request.url);
+  const title = url.searchParams.get("title") || "Portfolio";
 
   async function loadGoogleFont(font: string) {
     const url = `https://fonts.googleapis.com/css2?family=${font}`;
@@ -62,8 +62,10 @@ export async function GET(request: Request) {
             gap: "5rem",
           }}
         >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={baseURL + person.avatar}
+            alt={`${person.name} avatar`}
             style={{
               width: "12rem",
               height: "12rem",

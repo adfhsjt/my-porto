@@ -2,11 +2,15 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 
 import { Fade, Flex, Line, Row, ToggleButton } from "@once-ui-system/core";
 
 import { routes, display, person, about, blog, work, gallery } from "@/resources";
-import { ThemeToggle } from "./ThemeToggle";
+const ThemeToggle = dynamic(() => import("./ThemeToggle"), {
+  ssr: false,
+  loading: () => <div style={{ width: '40px', height: '40px' }} />
+});
 import styles from "./Header.module.scss";
 
 type TimeDisplayProps = {
@@ -16,8 +20,10 @@ type TimeDisplayProps = {
 
 const TimeDisplay: React.FC<TimeDisplayProps> = ({ timeZone, locale = "en-GB" }) => {
   const [currentTime, setCurrentTime] = useState("");
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const updateTime = () => {
       const now = new Date();
       const options: Intl.DateTimeFormatOptions = {
@@ -36,6 +42,7 @@ const TimeDisplay: React.FC<TimeDisplayProps> = ({ timeZone, locale = "en-GB" })
 
     return () => clearInterval(intervalId);
   }, [timeZone, locale]);
+  if (!mounted) return null;
 
   return <>{currentTime}</>;
 };

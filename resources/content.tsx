@@ -8,13 +8,13 @@ const person: Person = {
   role: "Backend Developer",
   avatar: "/images/avatar.jpg",
   email: "ahmadriski207@gmail.com",
-  location: "Asia/Nganjuk" as any,
+  location: "Asia/Jakarta",
   languages: ["Bahasa"], // optional: Leave the array empty if you don't want to display languages
 };
 
 const newsletter: Newsletter = {
   display: true,
-  title: <>Subscribe to {person.firstName}'s Newsletter</>,
+  title: <>Subscribe to {person.firstName}&apos;s Newsletter</>,
   description: <>My weekly newsletter about creativity and engineering</>,
 };
 
@@ -76,7 +76,7 @@ const home: Home = {
   },
   subline: (
     <>
-      I'm Ahmad, an Informatics student at <Text as="span" size="xl" weight="strong">POLINEMA</Text>,
+      I&apos;m Ahmad, an Informatics student at <Text as="span" size="xl" weight="strong">POLINEMA</Text>,
       passionate about building <Text as="span" size="xl" weight="strong">Web and Mobile</Text> applications.
     </>
   ),

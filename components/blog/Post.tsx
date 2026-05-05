@@ -3,9 +3,12 @@
 import { Card, Column, Media, Row, Avatar, Text } from "@once-ui-system/core";
 import { formatDate } from "@/utils/formatDate";
 import { person } from "@/resources";
+import { getPosts } from "@/utils/utils";
+
+type Post = ReturnType<typeof getPosts>[number];
 
 interface PostProps {
-  post: any;
+  post: Post;
   thumbnail: boolean;
   direction?: "row" | "column";
 }

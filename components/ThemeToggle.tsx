@@ -1,24 +1,17 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { Row, ToggleButton, useTheme } from "@once-ui-system/core";
+import React from "react";
+import { ToggleButton, useTheme } from "@once-ui-system/core";
 
-export const ThemeToggle: React.FC = () => {
+// Komponen internal yang sebenarnya
+const ThemeToggleComponent: React.FC = () => {
   const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  const [currentTheme, setCurrentTheme] = useState("light");
 
-  useEffect(() => {
-    setMounted(true);
-    setCurrentTheme(document.documentElement.getAttribute("data-theme") || "light");
-  }, []);
-
-  useEffect(() => {
-    setCurrentTheme(document.documentElement.getAttribute("data-theme") || "light");
-  }, [theme]);
-
-  const icon = currentTheme === "dark" ? "light" : "dark";
-  const nextTheme = currentTheme === "light" ? "dark" : "light";
+  // Karena ini tidak di-render di server, kita bisa langsung
+  // membaca state theme dengan aman.
+  const isDark = theme === "dark";
+  const icon = isDark ? "light" : "dark";
+  const nextTheme = isDark ? "light" : "dark";
 
   return (
     <ToggleButton
@@ -28,3 +21,5 @@ export const ThemeToggle: React.FC = () => {
     />
   );
 };
+
+export default ThemeToggleComponent;

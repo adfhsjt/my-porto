@@ -121,10 +121,12 @@ function createInlineCode({ children }: { children: ReactNode }) {
   return <InlineCode>{children}</InlineCode>;
 }
 
-function createCodeBlock(props: any) {
+function createCodeBlock(props: React.ComponentPropsWithoutRef<"pre"> & { children?: React.ReactNode }) {
   // For pre tags that contain code blocks
-  if (props.children && props.children.props && props.children.props.className) {
-    const { className, children } = props.children.props;
+  const child = props.children as React.ReactElement<{ className?: string; children?: React.ReactNode }> | undefined;
+
+  if (child?.props?.className) {
+    const { className, children } = child.props;
 
     // Extract language from className (format: language-xxx)
     const language = className.replace("language-", "");
@@ -151,7 +153,11 @@ function createCodeBlock(props: any) {
 }
 
 function createList(as: "ul" | "ol") {
-  return ({ children }: { children: ReactNode }) => <List as={as}>{children}</List>;
+  const CustomList = ({ children }: { children: ReactNode }) => <List as={as}>{children}</List>;
+
+  CustomList.displayName = `${as}`;
+
+  return CustomList;
 }
 
 function createListItem({ children }: { children: ReactNode }) {
@@ -171,21 +177,21 @@ function createHR() {
 }
 
 const components = {
-  p: createParagraph as any,
-  h1: createHeading("h1") as any,
-  h2: createHeading("h2") as any,
-  h3: createHeading("h3") as any,
-  h4: createHeading("h4") as any,
-  h5: createHeading("h5") as any,
-  h6: createHeading("h6") as any,
-  img: createImage as any,
-  a: CustomLink as any,
-  code: createInlineCode as any,
-  pre: createCodeBlock as any,
-  ol: createList("ol") as any,
-  ul: createList("ul") as any,
-  li: createListItem as any,
-  hr: createHR as any,
+  p: createParagraph,
+  h1: createHeading("h1"),
+  h2: createHeading("h2"),
+  h3: createHeading("h3"),
+  h4: createHeading("h4"),
+  h5: createHeading("h5"),
+  h6: createHeading("h6"),
+  img: createImage,
+  a: CustomLink,
+  code: createInlineCode,
+  pre: createCodeBlock,
+  ol: createList("ol"),
+  ul: createList("ul"),
+  li: createListItem,
+  hr: createHR,
   Heading,
   Text,
   CodeBlock,
